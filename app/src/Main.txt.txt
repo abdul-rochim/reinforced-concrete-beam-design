@@ -1,0 +1,199 @@
+#include "pymodule/modulebeamdesign.h"
+#include "pymodule/example.h"
+
+//#include <limits>
+#include <string_view>
+
+constexpr std::string_view beam_name = "B1";
+
+constexpr double Mu_pos = 270;				//kN.m	[positive Moment ultimate from structural analysis]
+constexpr double Mu_neg = 250;				//kN.m	[negative Moment ultimate from structural analysis]
+constexpr double fy = 420;					//MPa	[steel strength of longitudinal reinforcement]
+constexpr double fc = 35;					//MPa	[concrete strength]
+constexpr double dia_As_pos = 19;			//mm	[diameter of longitudinal reinforcement - positive]
+constexpr double dia_As_neg = 19;			//mm	[diameter of longitudinal reinforcement - negative]
+constexpr double dia_hoop = 13;				//mm	[diameter of closed hoop]
+constexpr double bw = 450;					//mm	[beam web section]
+constexpr double h = 760;					//mm	[beam depth section]
+constexpr double cover = 40;				//mm	[concrete cover]
+constexpr double dt_pos = h - cover - dia_hoop - dia_As_pos / 2.0;		//mm	[effective depth of one row of longitudinal reinforcement]
+constexpr double dt_neg = h - cover - dia_hoop - dia_As_neg / 2.0;		//mm	[effective depth of one row of longitudinal reinforcement]
+
+//initial definition of As and number of longitudinal bars
+extern double As_req_pos{};					//mm2	[cross section area of steel reinforcement - positive]
+extern double As_req_neg{};					//mm2	[cross section area of steel reinforcement - negative]
+extern double n_long_bar_pos{};				//bars	[number of longitudinal reinforcement - positive]
+extern double n_long_bar_neg{};				//bars	[number of longitudinal reinforcement - negative]
+
+constexpr double Vu = 211;					//kN	[shear ultimate]
+constexpr double fyv = 420;					//MPa	[steel strength of shear reinforcement]
+constexpr double dia_stirrup = 13;			//mm	[diameter of stirrup (ties)]
+constexpr double n_stirrup = 2;				//leg	[number of leg of the shear reinforcement]
+constexpr double phi_shear = 0.75;			//		[shear strength reduction factor]
+constexpr double lambda = 1.0;				//		[normalweight concrete = 1.0]
+
+//initial definition of stirrup spacing
+extern double s_prov{300};					//mm	[stirrup spacing]
+constexpr double Pu = 1000;					//kN	[axial ultimate]
+
+constexpr double Tu = 22.5;					//kN.m	[torsional ultimate]
+constexpr double fyt = fyv;					//MPa	[steel strength of transverse reinforcement]
+constexpr double dia_trans = dia_stirrup;	//mm	[diameter of transverse]
+constexpr double phi_torsion = 0.75;		//		[torsional strength reduction factor]
+constexpr double tetha = 45;				//degrees	[angle of torsional shear flow]
+
+constexpr double dia_As_sideFace = 16;		//mm	[diameter of bar at side face]
+
+std::tuple<
+	double,
+	double,
+	double,
+	double,
+	double,
+	double,
+	double,
+	double,
+	double,
+	double,
+	double,
+	double,
+	double*,
+	double*,
+	double*,
+	double*,
+	double,
+	double,
+	double,
+	double,
+	double,
+	double,
+	double*,
+	double,
+	double,
+	double,
+	double,
+	double>
+	data_design()
+{
+	//auto s_spacing = s_provided_; // can not do this -> result wrong type deduction
+
+	//std::cout << "deterministic data\n";
+	return std::make_tuple(
+		Mu_pos,
+		Mu_neg,
+		fy,
+		fc,
+		dia_As_pos,
+		dia_As_neg,
+		dia_hoop,
+		bw,
+		h,
+		cover,
+		dt_pos,
+		dt_neg,
+		&As_req_pos,
+		&As_req_neg,
+		&n_long_bar_pos,
+		&n_long_bar_neg,
+		Vu,
+		fyv,
+		dia_stirrup,
+		n_stirrup,
+		phi_shear,
+		lambda,
+		&std::get<0>(s_provided_), //&s_provided_, //&s_prov,        //[s_provided_ is from example.h -> function get_tup_array]
+		Tu,
+		fyt,
+		dia_trans,
+		phi_torsion,
+		tetha
+	);
+}
+
+int main()
+{
+	//printf("%.10f\n", 1.23456789);
+	std::cout << std::fixed << std::setprecision(2);
+	std::cout << "[C++] Program started" << '\n';
+	
+	py::scoped_interpreter guard{};
+//	py::exec(R"(
+//		print("[Python] Python says Hello")
+//	)");
+	try {
+		//from python module example
+//		foo();  // calling foo() is also to initial the value of tuple in the function get_tup_array [foo() in example.h]
+
+		//from python module
+		concrete_beam_design();
+
+		//show deflection calculation
+		///////check_deflection();
+
+	}
+	catch (py::error_already_set& e) {
+		std::cout << e.what() << '\n';
+	}
+
+	//alternative-1
+/*  // foo() must be called
+	std::cout << '\n';
+	std::cout << "********************************************************************************\n";
+	auto [a, b, c, d, e, f, g, h_, i, j, j2, j3, k, k2, l, l2, m_, n, o, p, q, r, s, t, u, v, w, x] = data_design();
+	std::cout << "--------------------------------------------------------------------------------\n\n";
+	std::cout << "*s : " << *s << std::endl;
+
+	Moment m(Mu_pos, fy, fc, bw, dt_pos);
+	phiMn(m, dia_As_pos, dia_hoop, cover, k, l);// &As_req, & n_long_bar);
+//	std::cout << "As longitudinal required : " << As_req_pos << " mm2\n";
+	std::cout << "As longitudinal required <tuple> : " << *k << " mm2\n";
+//	std::cout << "number of As longitudinal provided : " << n_long_bar_pos << " pieces\n";
+	std::cout << "number of As longitudinal provided <tuple> : " << *l << " pieces\n";
+
+	std::cout << "\n********************************************************************************\n\n";
+	Concrete& concrete = Concrete::getInstance();
+	SteelBar& bar = SteelBar::getInstance();
+	Moment m2(Mu_pos, bar.fy420(), concrete.fc40(), bw, dt_pos);
+	//phiMn(m2, dia_As, dia_stirrup, cover, &As_req, &n_long_bar);
+	std::cout << "\n********************************************************************************\n\n";
+
+	auto shearDesign = shear_design(Vu, fyv, fc, bw, dt_pos, phi_shear, lambda, dia_stirrup, n_stirrup, *s);// s_prov);
+	std::cout << "Vc : " << shearDesign.Vc << " kN" << std::endl;
+	std::cout << "Vs : " << shearDesign.Vs_prov << " kN" << std::endl;
+	std::cout << "Av per s required : " << shearDesign.Av_per_s_required << " mm2/mm" << std::endl;
+	std::cout << "Av per s : " << shearDesign.Av_per_s_prov << " mm2/mm" << std::endl;
+
+//	std::cout << "s_provided : " << s_prov << " mm\n";
+	std::cout << "s_provided <tuple> : " << *s << " mm\n";
+	std::cout << "\n********************************************************************************\n\n";
+
+	auto torsionalDesign = torsion_design(Tu, Vu, fyt, fy, fc, bw, h, dt_pos, phi_torsion, lambda, dia_trans, cover, tetha);
+	//std::cout << "Tth : " << torsionalDesign.Tth << " kN.m" << std::endl;
+	std::cout << "At/s required : " << torsionalDesign.At_per_s_req << " mm2/mm\n";
+	std::cout << "Al required : " << torsionalDesign.Al_req << " mm2\n";
+	std::cout << "Tth : " << torsionalDesign.Tth << " kN.m\n";
+	std::cout << "Tcr : " << torsionalDesign.Tth * 4. << " kN.m\n";
+
+	//auto [can_torsion_be_ignored, Acp, Pcp, Tth] = can_torsion_be_neglected(Tu, fc, bw, h, phi_torsion, lambda);
+	//std::cout << "torsional can be neglected? " << can_torsion_be_ignored << '\n';
+	//std::cout << "Tth : " << Tth << " kN.m\n";
+*/
+
+	//alternative-2
+/*	// foo() must be called
+	auto my_array = beam_design(data_design());
+	unsigned int nb{};
+	for (const auto& el : my_array) {
+		std::cout << "element[" << nb << "] : " << el << '\n';
+		++nb;
+	}
+*/
+	
+	std::cout << "\n********************************************************************************\n\n\n";
+
+	std::cout << "\n\n";
+	//std::cin.get();
+	return EXIT_SUCCESS;
+	//return 0;
+}
+
