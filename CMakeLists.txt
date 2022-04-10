@@ -1,6 +1,3 @@
-﻿##source :
-##https://www.youtube.com/watch?v=hmMcl2TVViw
-##https://github.com/Bagira80/More-Modern-CMake
 
 cmake_minimum_required(VERSION 3.10...3.22)
 
