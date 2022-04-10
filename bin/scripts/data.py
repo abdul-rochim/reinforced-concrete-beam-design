@@ -1,14 +1,5 @@
 #module data.py
 
-##source :
-#python read excel rows into tuple
-#python read and write excel
-#https://stackoverflow.com/questions/61675812/from-excel-to-list-of-tuples
-#https://stackoverflow.com/questions/33655127/how-to-read-certain-columns-from-excel-using-pandas-python
-#https://qavalidation.com/2021/03/python-openpyxl-library-read-excel-details-or-multiple-rows-as-tuple.html/
-#https://automatetheboringstuff.com/2e/chapter13/
-#https://zetcode.com/python/openpyxl/
-
 import pandas as pd
 #import openpyxl
 
@@ -57,8 +48,7 @@ def data_analysis() :
 def data_design_excel() :
     """
     #using pandas
-    #https://stackoverflow.com/questions/61675812/from-excel-to-list-of-tuples
-    df = pd.read_excel(r'D:\My Software\Pybind11\Thesis\Reinforced_Concrete_Optimization\input_output\input\data_excel.xlsx', sheet_name='data')    #, header=None)
+    df = pd.read_excel(r'~\Reinforced_Concrete_Optimization\input_output\input\data_excel.xlsx', sheet_name='data')    #, header=None)
     list_of_tuples = list(df.to_records(index=False))
     i = 0
     for element in list_of_tuples :
@@ -68,8 +58,7 @@ def data_design_excel() :
     """
     """
     #using openpyxl
-    #https://stackoverflow.com/questions/61675812/from-excel-to-list-of-tuples
-    wb = openpyxl.load_workbook(r'D:\My Software\Pybind11\Thesis\Reinforced_Concrete_Optimization\input_output\input\data_excel.xlsx')
+    wb = openpyxl.load_workbook(r'~\Reinforced_Concrete_Optimization\input_output\input\data_excel.xlsx')
     ws = wb.active
     cells = ws['A2:AB2']
     l = []
@@ -79,7 +68,6 @@ def data_design_excel() :
     return l #Also Display The Excel Formula -> Can not use this method.
     """
     #using pandas
-    #https://stackoverflow.com/questions/33655127/how-to-read-certain-columns-from-excel-using-pandas-python
     file_location = "~\Reinforced_Concrete_Optimization\input_output\input\data_excel.xlsx"
     df = pd.read_excel(file_location, sheet_name='data', usecols = "A:AE")    #, header=None)
     list_of_tuples = list(df.to_records(index=False))
