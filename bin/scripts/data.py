@@ -80,7 +80,7 @@ def data_design_excel() :
     """
     #using pandas
     #https://stackoverflow.com/questions/33655127/how-to-read-certain-columns-from-excel-using-pandas-python
-    file_location = "D:\My Software\Pybind11\Thesis\Reinforced_Concrete_Optimization\input_output\input\data_excel.xlsx"
+    file_location = "~\Reinforced_Concrete_Optimization\input_output\input\data_excel.xlsx"
     df = pd.read_excel(file_location, sheet_name='data', usecols = "A:AE")    #, header=None)
     list_of_tuples = list(df.to_records(index=False))
     """
