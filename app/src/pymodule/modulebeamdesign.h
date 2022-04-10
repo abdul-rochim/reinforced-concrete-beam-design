@@ -55,7 +55,7 @@ std::list<std::tuple<std::string, double, double, double,
 		double, double, double, double, double, double,
 		double, double, double, double, double,
 		double, double, double, double, double,
-		double, double, double, double, double>, 5> result;
+		double, double, double, double, double>, 2> _data_design_excel_();
 	*/
 
 	return func().cast< std::list<std::tuple< std::string, double, double, double,
