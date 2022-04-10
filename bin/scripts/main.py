@@ -17,10 +17,10 @@ def beam_design_summary() :
     calc = []
     for i in range(len(beamDataDesignExcel())) :
         calc.append(cpp_beam_design.beamDesign(beamDataDesignExcel()[i]))
-    
+    """
     print("print element from Python")
     for x in range(len(calc)) :
         print(calc[x])
     print("end print element from Python\n\n")
-    
+    """
     return calc
