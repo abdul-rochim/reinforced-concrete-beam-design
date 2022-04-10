@@ -83,7 +83,7 @@ void concrete_beam_design() {
 	
 	std::list<std::array<double, 5>> func_array = _beam_design_().cast<std::list<std::array<double, 5>> >();
 
-	std::cout << "print element from C++" << '\n';
+/*	std::cout << "print element from C++" << '\n';
 	std::cout << std::fixed << std::setprecision(2);
 	for (const auto& element : func_array) {
 		unsigned int j{};
@@ -95,7 +95,7 @@ void concrete_beam_design() {
 		std::cout << typeid(element).name() << "\n";
 	}
 	std::cout << typeid(func_array).name() << "\n";
-	std::cout << "end print element from C++" << '\n'; 
+	std::cout << "end print element from C++" << '\n'; */
 }
 
 /*
