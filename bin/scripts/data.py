@@ -48,7 +48,7 @@ def data_analysis() :
 def data_design_excel() :
     """
     #using pandas
-    df = pd.read_excel(r'~\Reinforced_Concrete_Optimization\input_output\input\data_excel.xlsx', sheet_name='data')    #, header=None)
+    df = pd.read_excel(r'..\input_output\input\data_excel.xlsx', sheet_name='data')    #, header=None)
     list_of_tuples = list(df.to_records(index=False))
     i = 0
     for element in list_of_tuples :
@@ -58,7 +58,7 @@ def data_design_excel() :
     """
     """
     #using openpyxl
-    wb = openpyxl.load_workbook(r'~\Reinforced_Concrete_Optimization\input_output\input\data_excel.xlsx')
+    wb = openpyxl.load_workbook(r'..\input_output\input\data_excel.xlsx')
     ws = wb.active
     cells = ws['A2:AB2']
     l = []
@@ -68,7 +68,7 @@ def data_design_excel() :
     return l #Also Display The Excel Formula -> Can not use this method.
     """
     #using pandas
-    file_location = "~\Reinforced_Concrete_Optimization\input_output\input\data_excel.xlsx"
+    file_location = "..\input_output\input\data_excel.xlsx"
     df = pd.read_excel(file_location, sheet_name='data', usecols = "A:AE")    #, header=None)
     list_of_tuples = list(df.to_records(index=False))
     """
