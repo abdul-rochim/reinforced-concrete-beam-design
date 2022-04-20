@@ -1,5 +1,5 @@
-﻿//Author : Abdul Rochim
-//Structural Civil Engineering
+//REINFORCED CONCRETE DESIGN - RECTANGULAR SECTION BEAM
+//Version 1.0.0
 //email : abdul.rochim.civeng@gmail.com
 
 #include "pymodule/modulebeamdesign.h"
