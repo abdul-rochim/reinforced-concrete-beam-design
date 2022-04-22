@@ -49,15 +49,17 @@ std::list<std::tuple<std::string, double, double, double,
 	_data_design_excel_() {
 	auto pyData = py::module::import("scripts.data"); //import from data.py
 	auto func = pyData.attr("data_design_excel"); //import from python file -> data.py
-
-/*	std::array<std::tuple< std::string, double, double, double,
-		double, double, double, double, double, double,
-		double, double, double, double, double, double,
-		double, double, double, double, double,
-		double, double, double, double, double,
-		double, double, double, double, double>, 2> _data_design_excel_();
+/*
+std::array<std::tuple< std::string, double, double, double,
+	double, double, double, double, double, double,
+	double, double, double, double, double, double,
+	double, double, double, double, double,
+	double, double, double, double, double,
+	double, double, double, double, double>, 3>
+	_data_design_excel_() {
+	auto pyData = py::module::import("scripts.data"); //import from data.py
+	auto func = pyData.attr("data_design_excel"); //import from python file -> data.py
 	*/
-
 	return func().cast< std::list<std::tuple< std::string, double, double, double,
 		double, double, double, double, double, double,
 		double, double, double, double, double, double,
@@ -75,15 +77,16 @@ PYBIND11_EMBEDDED_MODULE(module_data_excel, handle) {
 
 
 void concrete_beam_design() {
-	std::cout << "[C++] call function beam_design_summary from Python" << '\n';
+	trunc_file();
+	//std::cout << "[C++] call function beam_design_summary from Python" << '\n';
 
 	auto pyModule = py::module::import("scripts.main");
 	auto _beam_design_ = pyModule.attr("beam_design_summary");
 	//std::array<double, 5> func_array = _beam_design_().cast<std::array<double, 5>>();
-	
-	std::list<std::array<double, 5>> func_array = _beam_design_().cast<std::list<std::array<double, 5>> >();
 
-/*	std::cout << "print element from C++" << '\n';
+	std::list<std::array<double, 5>> func_array = _beam_design_().cast<std::list<std::array<double, 5>> >();
+	/*
+	std::cout << "print element from C++" << '\n';
 	std::cout << std::fixed << std::setprecision(2);
 	for (const auto& element : func_array) {
 		unsigned int j{};
@@ -98,12 +101,12 @@ void concrete_beam_design() {
 	std::cout << "end print element from C++" << '\n'; */
 }
 
-/*
+
 void check_deflection() {
 	auto pyMod = py::module::import("scripts.beam_deflection");
 	auto beam_deflection = pyMod.attr("beamDeflection");
 	beam_deflection();
 }
-*/
+
 
 #endif

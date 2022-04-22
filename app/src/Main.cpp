@@ -1,6 +1,5 @@
-//REINFORCED CONCRETE DESIGN - RECTANGULAR SECTION BEAM
-//Version 1.0.0
-//email : abdul.rochim.civeng@gmail.com
+﻿//Reinforced Concrete Optimization
+//Version	: 1.0.0
 
 #include "pymodule/modulebeamdesign.h"
 #include "pymodule/example.h"
@@ -9,24 +8,25 @@
 
 int main()
 {
-	std::cout << std::fixed << std::setprecision(2);
-	std::cout << "[C++] Program started" << '\n';
-	
+	//std::cout << "[C++] Program started\n\n";
+
 	py::scoped_interpreter guard{};
 //	py::exec(R"(
-//		print("[Python] Python says Hello")
+//		print("[Python] called from C++")
 //	)");
 	try {
 		//from python module
 		concrete_beam_design();
 
+		//check beam deflection
+		check_deflection();
+
+		std::cout << "\nthe analysis complete!\n";
 	}
 	catch (py::error_already_set& e) {
 		std::cout << e.what() << '\n';
 	}
+	//std::cout << "[C++] Program finished" << '\n';
 
-	std::cout << "\n\n";
-	//std::cin.get();
 	return EXIT_SUCCESS;
-	//return 0;
 }
