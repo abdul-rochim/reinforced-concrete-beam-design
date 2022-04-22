@@ -15,7 +15,7 @@ constexpr double PI = double(3.14159265358979323846);
 //const double pi = std::acos(-1);
 
 std::array<double, 5> beam_design(
-	std::tuple<
+	const std::tuple<
 	std::string,
 	double,
 	double,
@@ -46,6 +46,8 @@ std::array<double, 5> beam_design(
 	double,
 	double,
 	double,
-	double>);
+	double>&);
 
 #endif
+
+void trunc_file();
