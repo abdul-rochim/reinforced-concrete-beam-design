@@ -6,7 +6,9 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <iostream>
+#include <iomanip>
 #include <string>
+#include <fstream>
 
 struct Shear {
 	double Vc, Vs_prov, Av_per_s_required, Av_per_s_prov;
