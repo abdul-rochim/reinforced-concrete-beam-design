@@ -8,6 +8,7 @@
 //#include <utility>
 #include <iostream>
 #include <iomanip>
+#include <fstream>
 
 struct Moment {
 	//constructors
@@ -102,9 +103,9 @@ inline Moment& Moment::operator = (Moment&& other) noexcept {
 }
 
 //moment strength reduction factor
-double phi_moment(Moment m, const double& As_, double& eps_t_);
+double phi_moment(Moment& m, const double& As_, double& eps_t_);
 
 //moment nominal capacity
-double phiMn(Moment m, const double& dia_long, const double& d_hoop, const double& cover, double* As_provided, double* nb_bar);
+double phiMn(Moment& m, const double& dia_long, const double& d_hoop, const double& cover, double* As_provided, double* nb_bar);
 
 #endif
