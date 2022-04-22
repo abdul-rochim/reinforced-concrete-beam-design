@@ -1,5 +1,6 @@
-﻿//Reinforced Concrete Optimization
+//Reinforced Concrete Optimization
 //Version	: 1.0.0
+//Email		: abdul.rochim.civeng@gmail.com
 
 #include "pymodule/modulebeamdesign.h"
 #include "pymodule/example.h"
