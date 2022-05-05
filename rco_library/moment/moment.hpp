@@ -21,11 +21,11 @@ struct Moment {
 	Moment& operator = (Moment&&) noexcept;			//move assignment
 
 	//functions
-	const double initial_As_req() const;					//cross section area of longitudinal reinforcement
+	double initial_As_req() const;					//cross section area of longitudinal reinforcement
 	//concrete compressive stress distribution
 	//Code allows the use of an equivalent rectangular compressive stress distribution
 	//of 0.85fc' with a depth of: a = betha1.c
-	const double a(const double& As) const;				//depth of compressive concrete
+	double a(const double& As) const;				//depth of compressive concrete
 	void swap(Moment&) noexcept;
 	void print_As_required() { std::cout << initial_As_req() << '\n'; }
 
