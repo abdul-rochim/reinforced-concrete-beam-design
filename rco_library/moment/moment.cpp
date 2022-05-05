@@ -11,7 +11,7 @@ and phi.Mn must be greater than Mu.
 this moment.hpp file is using class with the new standard C++ or Modern C++
 */
 
-inline const double Moment::initial_As_req() const {
+inline double Moment::initial_As_req() const {
 	//the design assumption is that beams will be tension-controlled, phi = 0.9
 	//this assumption will be checked later.
 	using std::pow;
@@ -22,7 +22,7 @@ inline const double Moment::initial_As_req() const {
 	return As_required;
 }
 
-inline const double Moment::a(const double& As) const {
+inline double Moment::a(const double& As) const {
 	return As * fy / (double(0.85) * fc * b);
 }
 
